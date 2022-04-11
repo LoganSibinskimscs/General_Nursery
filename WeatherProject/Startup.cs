@@ -31,8 +31,15 @@ namespace WeatherProject
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllersWithViews();
-
+            services.AddDistributedMemoryCache();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>();
+            services.AddSession(options => 
+            {
+                options.IdleTimeout = TimeSpan.FromDays(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,7 +61,7 @@ namespace WeatherProject
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

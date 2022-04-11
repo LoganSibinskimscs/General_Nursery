@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,9 @@ namespace WeatherProject.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByNameAsync(model.UserName);
+                    HttpContext.Session.SetString("ssuserName", user.Name);
+                    var userName = HttpContext.Session.GetString("ssuserName");
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Invalid login attempt");
@@ -79,7 +83,10 @@ namespace WeatherProject.Controllers
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, model.RoleName);
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    if (!User.IsInRole(Helper.Admin))
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 foreach(var error in result.Errors)
