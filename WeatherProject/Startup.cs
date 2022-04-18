@@ -29,6 +29,8 @@ namespace WeatherProject
         {
             services.AddDbContext<ApplicationDBContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<WeatherDBContext>
+                (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllersWithViews();
             services.AddDistributedMemoryCache();

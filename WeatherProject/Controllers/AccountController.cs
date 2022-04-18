@@ -43,7 +43,7 @@ namespace WeatherProject.Controllers
                     var user = await _userManager.FindByNameAsync(model.UserName);
                     HttpContext.Session.SetString("ssuserName", user.Name);
                     var userName = HttpContext.Session.GetString("ssuserName");
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Weather");
                 }
                 ModelState.AddModelError("", "Invalid login attempt");
             }
@@ -87,7 +87,7 @@ namespace WeatherProject.Controllers
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
                     }
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Weather");
                 }
                 foreach(var error in result.Errors)
                 {

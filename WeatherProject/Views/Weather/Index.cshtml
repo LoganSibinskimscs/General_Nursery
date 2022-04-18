@@ -1,0 +1,67 @@
+﻿@model IEnumerable<WeatherProject.Models.ViewModels.WeatherViewModel>
+
+    <div class="container p-3">
+        <div class="row col-md-8">
+            <div class="col-6">
+                <h2 class="text-primary">Weather Data</h2>
+            </div>
+        </div>
+
+        <br />
+        @if (Model.Count() > 0)
+        {
+            <table class="table table-bordered table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            AMBIENT_TEMPERATURE
+                        </th>
+                        <th>
+                            GROUND_TEMPERATURE
+                        </th>
+                        <th>
+                            AIR_QUALITY
+                        </th>
+                        <th>
+                            AIR_PRESSURE
+                        </th>
+                        <th>
+                            HUMIDITY
+                        </th>
+                        <th>
+                            WIND_DIRECTION
+                        </th>
+                        <th>
+                            WIND_SPEED
+                        </th>
+                        <th>
+                            WIND_GUST_SPEED
+                        </th>
+                        <th>
+                            RAINFALL
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var weather in Model)
+                    {
+                       <tr>
+                           <td width="30%">@weather.ID</td>
+                           <td width="30%">@weather.AMBIENT_TEMPERATURE</td>
+                           <td width="30%">@weather.GROUND_TEMPERATURE</td>
+                           <td width="30%">@weather.AIR_QUALITY</td>
+                           <td width="30%">@weather.AIR_PRESSURE</td>
+                           <td width="30%">@weather.HUMIDITY</td>
+                           <td width="30%">@weather.WIND_DIRECTION</td>
+                           <td width="30%">@weather.WIND_SPEED</td>
+                           <td width="30%">@weather.WIND_GUST_SPEED</td>
+                           <td width="30%">@weather.RAINFALL</td>
+                       </tr>
+                     }
+                </tbody>
+            </table>
+         }
+    </div>
