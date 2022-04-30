@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,18 +19,24 @@ namespace WeatherProject.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string sortOrder, int? pageNumber = 1)
         {
-            IEnumerable<WeatherViewModel> objList = _db.Weather;
-            return View(objList);
+            ViewData["IDSortParam"] = String.IsNullOrEmpty(sortOrder) ? "idDesc" : "";
+
+            var weather = from s in _db.Weather select s;
+
+            switch (sortOrder)
+            {
+                case "idDesc":
+                    weather = weather.OrderByDescending(s => s.ID);
+                    break;
+                default:
+                    weather = weather.OrderBy(s => s.ID);
+                    break;
+            }
+            int pageSize = 20;
+            //IEnumerable<WeatherViewModel> objList = _db.Weather;
+            return View(await PaginatedList<WeatherViewModel>.CreateAsync(weather.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
-
-        //[HttpPost]
-        //public IActionResult Index(WeatherViewModel model)
-        //{
-        //    WeatherViewModel weather = new WeatherViewModel();
-
-        //    return View(model);
-        //}
     }
 }

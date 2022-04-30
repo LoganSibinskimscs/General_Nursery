@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WeatherProject.Models.ViewModels.WeatherViewModel>
+﻿@model PaginatedList<WeatherProject.Models.ViewModels.WeatherViewModel>
 
     <div class="container p-3">
         <div class="row col-md-8">
@@ -14,7 +14,7 @@
                 <thead>
                     <tr>
                         <th>
-                            ID
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["IDSortParam"]">ID</a>
                         </th>
                         <th>
                             AMBIENT_TEMPERATURE
@@ -65,3 +65,19 @@
             </table>
          }
     </div>
+@{ 
+    var prevDisabled = !Model.PreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.NextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+     Next
+</a>
